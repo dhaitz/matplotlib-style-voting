@@ -1,0 +1,38 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>Matplotlib Style Voting</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
+    <link rel="stylesheet" href="/static/style/my_style.css">
+  </head>
+
+  <body>
+    <h1>Matplotlib Style Voting</h1>
+
+    <p>
+      Click on bar to vote –
+      Hover over image to enlarge, click for info –
+      <del>Add your own style via pull request <a href="https://github.com/dhaitz/matplotlib-style-gallery">here</a></del> –
+      Style order by votes, updates every {{ minutes_between_vote_query }} minutes –
+      <a href="https://matplotlib-style-configurator.herokuapp.com/">Matplotlib Style Configurator</a>
+     </p>
+
+    {% for style, style_properties in styles.items() %}
+      <p style="white-space:nowrap;">
+        <a href="{{ style_properties['poll_vote_url'] }}">
+          <img src="{{ style_properties['poll_img_url'] }}">
+        </a>
+        <a href="{{ style_properties['info_url'] }}">
+          {% for i in range(6) %}
+            <img class="mplimg" src="/static/img/{{ style }}{{ i+1 }}.png" height=100>
+          {% endfor %}
+        </a>
+      </p>
+    {% endfor %}
+
+    <p>info</p>
+
+  </body>
+
+</html>
