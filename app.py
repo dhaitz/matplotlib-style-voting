@@ -48,6 +48,7 @@ def query_votes_and_update_style_order():
 
     for style, style_properties in styles.items():
         style_properties['votes'] = get_votes_for_style(POLL_URL + style)
+        print(f" {style}: {style_properties['votes']} votes")
 
     # re-order according to votes
     styles_sorted_by_votes = sorted(styles.items(), key=lambda x: x[1]['votes'], reverse=True)  # list of tuples: [(style_A, style_A_properties), ...]
