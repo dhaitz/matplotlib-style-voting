@@ -1,5 +1,5 @@
 flask
 matplotlib
 mplcyberpunk
-timeloop
+requests-futures
 gunicorn

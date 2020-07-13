@@ -1,34 +1,23 @@
 # encoding: utf-8
 
-from datetime import timedelta
 from flask import Flask, render_template
 import json
 import os
 import re
-import timeloop
-import urllib.request
+from requests_futures import sessions
 
 import plot
 
 app = Flask(__name__)
-
-styles = None
+session = sessions.FuturesSession()
 
 POLL_URL = f"https://api.gh-polls.com/poll/{os.environ['POLL_ID']}/"
 MINUTES_BETWEEN_VOTE_QUERY = int(os.environ['MINUTES_BETWEEN_VOTE_QUERY'])
 DEFAULT_INFO_URL = "https://matplotlib.org//tutorials/introductory/customizing.html"
 
-#tl = timeloop.Timeloop()
 
-
-@app.route('/')
-def main():
-    return render_template('index.html', styles=styles, minutes_between_vote_query=MINUTES_BETWEEN_VOTE_QUERY)
-
-@app.before_first_request
-def init_styles(styles_filename='styles.json'):
+def init_styles(styles_filename):
     """Load the styles dict from JSON and construct the necessary URL properties"""
-    global styles
 
     with open(styles_filename, 'rb') as f:
         styles = json.load(f)
@@ -37,34 +26,43 @@ def init_styles(styles_filename='styles.json'):
         style_properties['poll_img_url'] = POLL_URL + style
         style_properties['info_url'] = style_properties.get('info_url', DEFAULT_INFO_URL)
         style_properties['poll_vote_url'] = style_properties['poll_img_url'] + '/vote'
+        style_properties['votes'] = 0
 
-    query_votes_and_update_style_order()
+    return styles
 
 
-#@tl.job(interval=timedelta(minutes=MINUTES_BETWEEN_VOTE_QUERY))
-@app.after_request
-def query_votes_and_update_style_order():
+STYLES = init_styles(styles_filename='styles.json')
+
+
+@app.route('/')
+def main():
+    styles_sorted = query_votes_and_update_style_order(STYLES)
+    return render_template('index.html', styles=styles_sorted, minutes_between_vote_query=MINUTES_BETWEEN_VOTE_QUERY)
+
+
+def query_votes_and_update_style_order(styles):
     """Since querying the number of votes takes some time, do it only every N minutes"""
-    global styles
+    # use multiprocessing to get votes, then assign to dict
+    style_list = list(styles.keys())
+    urls = [POLL_URL + style for style in style_list]
 
-    for style, style_properties in styles.items():
-        style_properties['votes'] = get_votes_for_style(POLL_URL + style)
-        print(f" {style}: {style_properties['votes']} votes")
+    futures = [session.get(url) for url in urls]  # https://julien.danjou.info/python-and-fast-http-clients/
+    contents = [f.result().content for f in futures]
+
+    for style, content in zip(style_list, contents):
+        votes = get_vote_from_content(content)
+        styles[style]['votes'] = votes
+        print(f" {style}: {votes} votes")
 
     # re-order according to votes
     styles_sorted_by_votes = sorted(styles.items(), key=lambda x: x[1]['votes'], reverse=True)  # list of tuples: [(style_A, style_A_properties), ...]
     styles = {style_name: style_properties for style_name, style_properties in styles_sorted_by_votes}
     print("Style order:", ", ".join(styles.keys()))
+    return styles
 
 
-def get_votes_for_style(img_url):
+def get_vote_from_content(content):
     """Because we can't query the number of votes directly: get the SVG and extract the number from there via regex."""
-    try:
-        content = urllib.request.urlopen(img_url).read()
-        print(f"Getting votes from {img_url}")
-    except urllib.error.HTTPError:
-        return 0
-
     result = re.search('<tspan x="386" y="30">(.*)</tspan>', content.decode())
     if result:
         return int(result.group(1))
@@ -72,7 +70,7 @@ def get_votes_for_style(img_url):
         return 0
 
 
-def create_images(output_folder):
+def create_images(output_folder, styles):
     """The style demo images are dynamically generated at startup.
        This allows easy adding styles via PR, without having to add an image.
     """
@@ -81,9 +79,6 @@ def create_images(output_folder):
         plot.plot_and_save(output_folder=output_folder, style_name=style, style=style_argument)
 
 
-#init_styles(styles_filename='styles.json')
-#tl.start()
-
 if __name__ == '__main__':
-    create_images(output_folder='static/img/')
+    # create_images(output_folder='static/img/')
     app.run()
