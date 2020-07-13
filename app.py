@@ -25,7 +25,7 @@ tl = timeloop.Timeloop()
 def main():
     return render_template('index.html', styles=styles, minutes_between_vote_query=MINUTES_BETWEEN_VOTE_QUERY)
 
-
+@app.before_first_request
 def init_styles(styles_filename='styles.json'):
     """Load the styles dict from JSON and construct the necessary URL properties"""
     global styles
@@ -69,7 +69,8 @@ def get_votes_for_style(img_url):
         return 0
 
 
-def create_images(output_folder):
+@app.before_first_request
+def create_images(output_folder='static/img/'):
     """The style demo images are dynamically generated at startup.
        This allows easy adding styles via PR, without having to add an image.
     """
@@ -77,11 +78,7 @@ def create_images(output_folder):
         style_argument = style_properties.get('style_argument', style)
         plot.plot_and_save(output_folder=output_folder, style_name=style, style=style_argument)
 
+tl.start()
 
 if __name__ == '__main__':
-
-    init_styles()
-    create_images(output_folder='static/img/')
-    tl.start()
-
     app.run()
