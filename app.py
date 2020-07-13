@@ -18,15 +18,15 @@ POLL_URL = f"https://api.gh-polls.com/poll/{os.environ['POLL_ID']}/"
 MINUTES_BETWEEN_VOTE_QUERY = int(os.environ['MINUTES_BETWEEN_VOTE_QUERY'])
 DEFAULT_INFO_URL = "https://matplotlib.org//tutorials/introductory/customizing.html"
 
-tl = timeloop.Timeloop()
+#tl = timeloop.Timeloop()
 
 
 @app.route('/')
 def main():
     return render_template('index.html', styles=styles, minutes_between_vote_query=MINUTES_BETWEEN_VOTE_QUERY)
 
-
-def init_styles(styles_filename):
+@app.before_first_request
+def init_styles(styles_filename='styles.json'):
     """Load the styles dict from JSON and construct the necessary URL properties"""
     global styles
 
@@ -41,7 +41,8 @@ def init_styles(styles_filename):
     query_votes_and_update_style_order()
 
 
-@tl.job(interval=timedelta(minutes=MINUTES_BETWEEN_VOTE_QUERY))
+#@tl.job(interval=timedelta(minutes=MINUTES_BETWEEN_VOTE_QUERY))
+@app.after_request
 def query_votes_and_update_style_order():
     """Since querying the number of votes takes some time, do it only every N minutes"""
     global styles
@@ -80,8 +81,8 @@ def create_images(output_folder):
         plot.plot_and_save(output_folder=output_folder, style_name=style, style=style_argument)
 
 
-init_styles(styles_filename='styles.json')
-tl.start()
+#init_styles(styles_filename='styles.json')
+#tl.start()
 
 if __name__ == '__main__':
     create_images(output_folder='static/img/')
