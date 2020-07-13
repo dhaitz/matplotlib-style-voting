@@ -78,8 +78,8 @@ def create_images(output_folder):
         plot.plot_and_save(output_folder=output_folder, style_name=style, style=style_argument)
 
 
-create_images(output_folder='static/img/')
 init_styles(styles_filename='styles.json')
+create_images(output_folder='static/img/')
 tl.start()
 
 if __name__ == '__main__':
