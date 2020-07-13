@@ -15,15 +15,13 @@ app = Flask(__name__)
 styles = None
 
 POLL_URL = f"https://api.gh-polls.com/poll/{os.environ['POLL_ID']}/"
-MINUTES_BETWEEN_VOTE_QUERY = int(os.environ['MINUTES_BETWEEN_VOTE_QUERY'])
 DEFAULT_INFO_URL = "https://matplotlib.org//tutorials/introductory/customizing.html"
-
-tl = timeloop.Timeloop()
 
 
 @app.route('/')
 def main():
-    return render_template('index.html', styles=styles, minutes_between_vote_query=MINUTES_BETWEEN_VOTE_QUERY)
+    query_votes_and_update_style_order()
+    return render_template('index.html', styles=styles)
 
 
 def init_styles(styles_filename):
@@ -41,9 +39,7 @@ def init_styles(styles_filename):
     query_votes_and_update_style_order()
 
 
-@tl.job(interval=timedelta(minutes=MINUTES_BETWEEN_VOTE_QUERY))
 def query_votes_and_update_style_order():
-    """Since querying the number of votes takes some time, do it only every N minutes"""
     global styles
 
     for style, style_properties in styles.items():
@@ -81,7 +77,6 @@ def create_images(output_folder):
 
 
 init_styles(styles_filename='styles.json')
-tl.start()
 
 if __name__ == '__main__':
     create_images(output_folder='static/img/')
