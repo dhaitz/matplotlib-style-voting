@@ -2,3 +2,4 @@ flask
 matplotlib
 mplcyberpunk
 timeloop
+gunicorn
