@@ -53,6 +53,7 @@ def query_votes_and_update_style_order():
     # re-order according to votes
     styles_sorted_by_votes = sorted(styles.items(), key=lambda x: x[1]['votes'], reverse=True)  # list of tuples: [(style_A, style_A_properties), ...]
     styles = {style_name: style_properties for style_name, style_properties in styles_sorted_by_votes}
+    print("Style order:", ", ".join(styles.keys()))
 
 
 def get_votes_for_style(img_url):
