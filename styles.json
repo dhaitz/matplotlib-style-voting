@@ -1,0 +1,60 @@
+{
+  "default": {},
+  "Solarize_Light2": {},
+  "bmh": {},
+  "classic": {},
+  "dark_background": {},
+  "fast": {},
+  "fivethirtyeight": {},
+  "ggplot": {},
+  "grayscale": {},
+  "seaborn": {},
+  "seaborn-bright": {},
+  "seaborn-colorblind": {},
+  "seaborn-dark": {},
+  "seaborn-dark-palette": {},
+  "seaborn-darkgrid": {},
+  "seaborn-deep": {},
+  "seaborn-muted": {},
+  "seaborn-notebook": {},
+  "seaborn-paper": {},
+  "seaborn-pastel": {},
+  "seaborn-poster": {},
+  "seaborn-talk": {},
+  "seaborn-ticks": {},
+  "seaborn-white": {},
+  "seaborn-whitegrid": {},
+  "tableau-colorblind10": {},
+  "Pacoty": {
+    "style_argument": "https://raw.githubusercontent.com/dhaitz/matplotlib-stylesheets/master/pacoty.mplstyle",
+    "info_url": "https://github.com/dhaitz/matplotlib-stylesheets"
+  },
+  "PitayaSmoothie-dark": {
+    "style_argument": "https://raw.githubusercontent.com/dhaitz/matplotlib-stylesheets/master/pitayasmoothie-dark.mplstyle",
+    "info_url": "https://github.com/dhaitz/matplotlib-stylesheets"
+  },
+  "PitayaSmoothie-light": {
+    "style_argument": "https://raw.githubusercontent.com/dhaitz/matplotlib-stylesheets/master/pitayasmoothie-light.mplstyle",
+    "info_url": "https://github.com/dhaitz/matplotlib-stylesheets"
+  },
+  "GrandBudapest": {
+    "style_argument": "https://raw.githubusercontent.com/cako/mpl_grandbudapest/master/grandbudapest.mplstyle",
+    "info_url": "https://github.com/cako/mpl_grandbudapest"
+  },
+  "QuantumBlack-light": {
+    "style_argument": "https://raw.githubusercontent.com/quantumblacklabs/qbstyles/master/qbstyles/styles/qb-light.mplstyle",
+    "info_url": "https://github.com/quantumblacklabs/qbstyles"
+  },
+  "QuantumBlack-dark": {
+    "style_argument": "https://raw.githubusercontent.com/quantumblacklabs/qbstyles/master/qbstyles/styles/qb-dark.mplstyle",
+    "info_url": "https://github.com/quantumblacklabs/qbstyles"
+  },
+  "QuantumBlack-common": {
+    "style_argument": "https://raw.githubusercontent.com/quantumblacklabs/qbstyles/master/qbstyles/styles/qb-common.mplstyle",
+    "info_url": "https://github.com/quantumblacklabs/qbstyles"
+  },
+  "mplcyberpunk": {
+    "style_argument": "cyberpunk",
+    "info_url": "https://github.com/dhaitz/mplcyberpunk"
+  }
+}
