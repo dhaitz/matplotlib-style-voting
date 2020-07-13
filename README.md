@@ -15,7 +15,8 @@ This would allow easy adding of new styles via pull request (add a new style wit
 - Style images are checked in due to Heroku app boot timeout restrictions
   - ⚠️ However, as adding new styles would require the creation of a new poll, not accepting any PRs at the moment
 
-- Possible improvements:
+ ## Possible improvements
+ 
   - A polling system which allows to add voting options
   - The possibility to upload stylesheeta or add information via an online submission form
   - Voting and submission authenticated with GitHub account
