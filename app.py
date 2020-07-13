@@ -79,8 +79,8 @@ def create_images(output_folder):
 
 
 init_styles(styles_filename='styles.json')
-create_images(output_folder='static/img/')
 tl.start()
 
 if __name__ == '__main__':
+    create_images(output_folder='static/img/')
     app.run()
