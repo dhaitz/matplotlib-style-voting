@@ -2,7 +2,7 @@
 
 - See it live [here](https://matplotlib-style-voting.herokuapp.com)
 
-- Originated from [this tweet](https://twitter.com/d_haitz/status/1280773487628517377?s=20)
+- Originated from [this tweet](https://twitter.com/d_haitz/status/1280773487628517377)
 
 - The polling is currently implemented via [gh-polls](https://github.com/apex/gh-polls), a simple online tool which generates images that show the current vote count (voting via link)
   - ⚠️ gh-polls doesn't allow adding options to an existing poll
