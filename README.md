@@ -8,6 +8,7 @@
   - ⚠️ gh-polls doesn't allow adding options to an existing poll
   - gh-polls doesnt allow to query the number of votes per style directly, only the images (SVG).
   As they are needed for the order of the styles, the vote count is extracted from the SVG via regex ...
+  - ⚠️  As it takes some time to query all votes this way, the vote queries & sorting isn't performed at page load, but periodically as a background task
 
 - ~~The style demo images are not checked in, but are dynamically generated at app startup.
 This would allow easy adding of new styles via pull request (add a new style with URL in `styles.json`).~~
