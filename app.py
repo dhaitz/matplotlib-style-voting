@@ -12,7 +12,6 @@ app = Flask(__name__)
 session = sessions.FuturesSession()
 
 POLL_URL = f"https://api.gh-polls.com/poll/{os.environ['POLL_ID']}/"
-MINUTES_BETWEEN_VOTE_QUERY = int(os.environ['MINUTES_BETWEEN_VOTE_QUERY'])
 DEFAULT_INFO_URL = "https://matplotlib.org//tutorials/introductory/customizing.html"
 
 
@@ -37,7 +36,7 @@ STYLES = init_styles(styles_filename='styles.json')
 @app.route('/')
 def main():
     styles_sorted = query_votes_and_update_style_order(STYLES)
-    return render_template('index.html', styles=styles_sorted, minutes_between_vote_query=MINUTES_BETWEEN_VOTE_QUERY)
+    return render_template('index.html', styles=styles_sorted)
 
 
 def query_votes_and_update_style_order(styles):
